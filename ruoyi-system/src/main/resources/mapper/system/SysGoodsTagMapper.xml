@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysGoodsTagMapper">
+
+    <resultMap type="SysGoodsTag" id="SysGoodsTagResult">
+        <result property="goodsId"    column="goods_id"    />
+        <result property="tagId"    column="tag_id"    />
+    </resultMap>
+
+    <sql id="selectSysGoodsTagVo">
+        select goods_id, tag_id from sys_goods_tag
+    </sql>
+
+    <select id="selectSysGoodsTagList" parameterType="SysGoodsTag" resultMap="SysGoodsTagResult">
+        <include refid="selectSysGoodsTagVo"/>
+        <where>
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="tagId != null "> and tag_id = #{tagId}</if>
+        </where>
+    </select>
+
+    <select id="selectSysGoodsTagById" parameterType="Long" resultMap="SysGoodsTagResult">
+        <include refid="selectSysGoodsTagVo"/>
+        where goods_id = #{goodsId}
+    </select>
+
+    <insert id="insertSysGoodsTag" parameterType="SysGoodsTag">
+        insert into sys_goods_tag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">goods_id,</if>
+            <if test="tagId != null">tag_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="tagId != null">#{tagId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysGoodsTag" parameterType="SysGoodsTag">
+        update sys_goods_tag
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tagId != null">tag_id = #{tagId},</if>
+        </trim>
+        where goods_id = #{goodsId}
+    </update>
+
+    <delete id="deleteSysGoodsTagById" parameterType="Long">
+        delete from sys_goods_tag where goods_id = #{goodsId}
+    </delete>
+
+    <delete id="deleteSysGoodsTagByIds" parameterType="String">
+        delete from sys_goods_tag where goods_id in
+        <foreach item="goodsId" collection="array" open="(" separator="," close=")">
+            #{goodsId}
+        </foreach>
+    </delete>
+</mapper>
