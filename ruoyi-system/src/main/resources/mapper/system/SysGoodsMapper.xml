@@ -5,22 +5,34 @@
 <mapper namespace="com.ruoyi.system.mapper.SysGoodsMapper">
 
     <resultMap type="SysGoods" id="SysGoodsResult">
-        <result property="goodsId"    column="goods_id"    />
-        <result property="goodsTitle"    column="goods_title"    />
-        <result property="goodsPrice"    column="goods_price"    />
-        <result property="goodsDesc"    column="goods_desc"    />
+        <result property="goodsId" column="goods_id"/>
+        <result property="goodsTitle" column="goods_title"/>
+        <result property="goodsPrice" column="goods_price"/>
+        <result property="goodsDesc" column="goods_desc"/>
+        <collection property="goodsGallery" ofType="com.ruoyi.system.domain.SysGoodsGallery">
+            <id property="goodsId" column="goods_id"/>
+            <result property="goodsImg" column="goods_img"/>
+        </collection>
+        <collection property="goodsTags" ofType="com.ruoyi.system.domain.SysTag">
+            <result property="tagName" column="tag_name"/>
+        </collection>
     </resultMap>
 
     <sql id="selectSysGoodsVo">
-        select goods_id, goods_title, goods_price, goods_desc from sys_goods
+        select g.goods_id, g.goods_title, g.goods_price, g.goods_desc, sgg.goods_img, st.tag_name
+        from sys_goods g
+                 join sys_goods_gallery sgg on g.goods_id = sgg.goods_id
+                 join sys_goods_tag sgt on g.goods_id = sgt.goods_id
+                 join sys_tag st on sgt.tag_id = st.tag_id
     </sql>
 
     <select id="selectSysGoodsList" parameterType="SysGoods" resultMap="SysGoodsResult">
         <include refid="selectSysGoodsVo"/>
         <where>
-            <if test="goodsTitle != null  and goodsTitle != ''"> and goods_title like concat('%', #{goodsTitle}, '%')</if>
-            <if test="goodsPrice != null "> and goods_price = #{goodsPrice}</if>
-            <if test="goodsDesc != null  and goodsDesc != ''"> and goods_desc = #{goodsDesc}</if>
+            <if test="goodsTitle != null  and goodsTitle != ''">and goods_title like concat('%', #{goodsTitle}, '%')
+            </if>
+            <if test="goodsPrice != null ">and goods_price = #{goodsPrice}</if>
+            <if test="goodsDesc != null  and goodsDesc != ''">and goods_desc = #{goodsDesc}</if>
         </where>
     </select>
 
@@ -54,7 +66,9 @@
     </update>
 
     <delete id="deleteSysGoodsById" parameterType="Long">
-        delete from sys_goods where goods_id = #{goodsId}
+        delete
+        from sys_goods
+        where goods_id = #{goodsId}
     </delete>
 
     <delete id="deleteSysGoodsByIds" parameterType="String">

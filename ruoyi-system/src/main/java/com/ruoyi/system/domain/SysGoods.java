@@ -5,6 +5,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import java.util.List;
+
 /**
  * 商品信息对象 sys_goods
  *
@@ -29,6 +31,10 @@ public class SysGoods extends BaseEntity
     /** 商品描述 */
     @Excel(name = "商品描述")
     private String goodsDesc;
+
+    private List<SysGoodsGallery> goodsGallery;
+
+    private List<SysTag> goodsTags;
 
     public void setGoodsId(Long goodsId)
     {
@@ -65,6 +71,22 @@ public class SysGoods extends BaseEntity
     public String getGoodsDesc()
     {
         return goodsDesc;
+    }
+
+    public List<SysGoodsGallery> getGoodsGallery() {
+        return goodsGallery;
+    }
+
+    public void setGoodsGallery(List<SysGoodsGallery> goodsGallery) {
+        this.goodsGallery = goodsGallery;
+    }
+
+    public List<SysTag> getGoodsTags() {
+        return goodsTags;
+    }
+
+    public void setGoodsTags(List<SysTag> goodsTags) {
+        this.goodsTags = goodsTags;
     }
 
     @Override
