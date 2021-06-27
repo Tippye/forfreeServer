@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysGoodsGalleryMapper">
+
+    <resultMap type="SysGoodsGallery" id="SysGoodsGalleryResult">
+        <result property="goodsId"    column="goods_id"    />
+        <result property="goodsImg"    column="goods_img"    />
+    </resultMap>
+
+    <sql id="selectSysGoodsGalleryVo">
+        select goods_id, goods_img from sys_goods_gallery
+    </sql>
+
+    <select id="selectSysGoodsGalleryList" parameterType="SysGoodsGallery" resultMap="SysGoodsGalleryResult">
+        <include refid="selectSysGoodsGalleryVo"/>
+        <where>
+            <if test="goodsImg != null  and goodsImg != ''"> and goods_img = #{goodsImg}</if>
+        </where>
+    </select>
+
+    <select id="selectSysGoodsGalleryById" parameterType="Long" resultMap="SysGoodsGalleryResult">
+        <include refid="selectSysGoodsGalleryVo"/>
+        where goods_id = #{goodsId}
+    </select>
+
+    <insert id="insertSysGoodsGallery" parameterType="SysGoodsGallery">
+        insert into sys_goods_gallery
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">goods_id,</if>
+            <if test="goodsImg != null and goodsImg != ''">goods_img,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="goodsImg != null and goodsImg != ''">#{goodsImg},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysGoodsGallery" parameterType="SysGoodsGallery">
+        update sys_goods_gallery
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsImg != null and goodsImg != ''">goods_img = #{goodsImg},</if>
+        </trim>
+        where goods_id = #{goodsId}
+    </update>
+
+    <delete id="deleteSysGoodsGalleryById" parameterType="Long">
+        delete from sys_goods_gallery where goods_id = #{goodsId}
+    </delete>
+
+    <delete id="deleteSysGoodsGalleryByIds" parameterType="String">
+        delete from sys_goods_gallery where goods_id in
+        <foreach item="goodsId" collection="array" open="(" separator="," close=")">
+            #{goodsId}
+        </foreach>
+    </delete>
+</mapper>

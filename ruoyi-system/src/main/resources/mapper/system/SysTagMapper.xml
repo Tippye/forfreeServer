@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysTagMapper">
+
+    <resultMap type="SysTag" id="SysTagResult">
+        <result property="tagId"    column="tag_id"    />
+        <result property="tagName"    column="tag_name"    />
+    </resultMap>
+
+    <sql id="selectSysTagVo">
+        select tag_id, tag_name from sys_tag
+    </sql>
+
+    <select id="selectSysTagList" parameterType="SysTag" resultMap="SysTagResult">
+        <include refid="selectSysTagVo"/>
+        <where>
+            <if test="tagName != null  and tagName != ''"> and tag_name like concat('%', #{tagName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectSysTagById" parameterType="Long" resultMap="SysTagResult">
+        <include refid="selectSysTagVo"/>
+        where tag_id = #{tagId}
+    </select>
+
+    <insert id="insertSysTag" parameterType="SysTag" useGeneratedKeys="true" keyProperty="tagId">
+        insert into sys_tag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tagName != null and tagName != ''">tag_name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tagName != null and tagName != ''">#{tagName},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysTag" parameterType="SysTag">
+        update sys_tag
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tagName != null and tagName != ''">tag_name = #{tagName},</if>
+        </trim>
+        where tag_id = #{tagId}
+    </update>
+
+    <delete id="deleteSysTagById" parameterType="Long">
+        delete from sys_tag where tag_id = #{tagId}
+    </delete>
+
+    <delete id="deleteSysTagByIds" parameterType="String">
+        delete from sys_tag where tag_id in
+        <foreach item="tagId" collection="array" open="(" separator="," close=")">
+            #{tagId}
+        </foreach>
+    </delete>
+</mapper>

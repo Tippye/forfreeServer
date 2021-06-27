@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysGoodsMapper">
+
+    <resultMap type="SysGoods" id="SysGoodsResult">
+        <result property="goodsId"    column="goods_id"    />
+        <result property="goodsTitle"    column="goods_title"    />
+        <result property="goodsPrice"    column="goods_price"    />
+        <result property="goodsDesc"    column="goods_desc"    />
+    </resultMap>
+
+    <sql id="selectSysGoodsVo">
+        select goods_id, goods_title, goods_price, goods_desc from sys_goods
+    </sql>
+
+    <select id="selectSysGoodsList" parameterType="SysGoods" resultMap="SysGoodsResult">
+        <include refid="selectSysGoodsVo"/>
+        <where>
+            <if test="goodsTitle != null  and goodsTitle != ''"> and goods_title like concat('%', #{goodsTitle}, '%')</if>
+            <if test="goodsPrice != null "> and goods_price = #{goodsPrice}</if>
+            <if test="goodsDesc != null  and goodsDesc != ''"> and goods_desc = #{goodsDesc}</if>
+        </where>
+    </select>
+
+    <select id="selectSysGoodsById" parameterType="Long" resultMap="SysGoodsResult">
+        <include refid="selectSysGoodsVo"/>
+        where goods_id = #{goodsId}
+    </select>
+
+    <insert id="insertSysGoods" parameterType="SysGoods" useGeneratedKeys="true" keyProperty="goodsId">
+        insert into sys_goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsTitle != null and goodsTitle != ''">goods_title,</if>
+            <if test="goodsPrice != null">goods_price,</if>
+            <if test="goodsDesc != null">goods_desc,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsTitle != null and goodsTitle != ''">#{goodsTitle},</if>
+            <if test="goodsPrice != null">#{goodsPrice},</if>
+            <if test="goodsDesc != null">#{goodsDesc},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysGoods" parameterType="SysGoods">
+        update sys_goods
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsTitle != null and goodsTitle != ''">goods_title = #{goodsTitle},</if>
+            <if test="goodsPrice != null">goods_price = #{goodsPrice},</if>
+            <if test="goodsDesc != null">goods_desc = #{goodsDesc},</if>
+        </trim>
+        where goods_id = #{goodsId}
+    </update>
+
+    <delete id="deleteSysGoodsById" parameterType="Long">
+        delete from sys_goods where goods_id = #{goodsId}
+    </delete>
+
+    <delete id="deleteSysGoodsByIds" parameterType="String">
+        delete from sys_goods where goods_id in
+        <foreach item="goodsId" collection="array" open="(" separator="," close=")">
+            #{goodsId}
+        </foreach>
+    </delete>
+</mapper>
