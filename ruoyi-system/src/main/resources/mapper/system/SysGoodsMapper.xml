@@ -9,6 +9,15 @@
         <result property="goodsTitle" column="goods_title"/>
         <result property="goodsPrice" column="goods_price"/>
         <result property="goodsDesc" column="goods_desc"/>
+        <collection property="goodsAuthor" ofType="com.ruoyi.common.core.domain.entity.SysUser">
+            <result property="userId" column="user_id"/>
+            <result property="avatar" column="avatar"/>
+            <result property="nickName" column="nick_name"/>
+            <result property="userName" column="user_name"/>
+            <result property="sex" column="sex"/>
+            <result property="loginIp" column="login_ip"/>
+            <result property="loginDate" column="login_date"/>
+        </collection>
         <collection property="goodsGallery" ofType="com.ruoyi.system.domain.SysGoodsGallery">
             <id property="goodsId" column="goods_id"/>
             <result property="goodsImg" column="goods_img"/>
@@ -19,11 +28,26 @@
     </resultMap>
 
     <sql id="selectSysGoodsVo">
-        select g.goods_id, g.goods_title, g.goods_price, g.goods_desc, sgg.goods_img, st.tag_name
+        select g.goods_id,
+               g.goods_title,
+               g.goods_price,
+               g.goods_desc,
+               sgg.goods_img,
+               st.tag_name,
+               su.user_id,
+               su.avatar,
+               su.user_name,
+               su.nick_name,
+               su.sex,
+               su.login_date,
+               su.login_ip,
+               suw.balance
         from sys_goods g
-                 join sys_goods_gallery sgg on g.goods_id = sgg.goods_id
-                 join sys_goods_tag sgt on g.goods_id = sgt.goods_id
-                 join sys_tag st on sgt.tag_id = st.tag_id
+                 left join sys_goods_gallery sgg on g.goods_id = sgg.goods_id
+                 left join sys_goods_tag sgt on g.goods_id = sgt.goods_id
+                 left join sys_tag st on sgt.tag_id = st.tag_id
+                 left join sys_user su on g.goods_author = su.user_id
+                 left join sys_user_wallet suw on su.user_id = suw.user_id
     </sql>
 
     <select id="selectSysGoodsList" parameterType="SysGoods" resultMap="SysGoodsResult">

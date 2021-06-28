@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain;
 
+import com.ruoyi.common.core.domain.entity.SysUser;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -23,6 +24,10 @@ public class SysGoods extends BaseEntity
     /** 商品标题 */
     @Excel(name = "商品标题")
     private String goodsTitle;
+
+    /** 商品发布者 */
+    @Excel(name="发布者")
+    private SysUser goodsAuthor;
 
     /** 商品价格 */
     @Excel(name = "商品价格")
@@ -87,6 +92,14 @@ public class SysGoods extends BaseEntity
 
     public void setGoodsTags(List<SysTag> goodsTags) {
         this.goodsTags = goodsTags;
+    }
+
+    public SysUser getGoodsAuthor() {
+        return goodsAuthor;
+    }
+
+    public void setGoodsAuthor(SysUser goodsAuthor) {
+        this.goodsAuthor = goodsAuthor;
     }
 
     @Override
