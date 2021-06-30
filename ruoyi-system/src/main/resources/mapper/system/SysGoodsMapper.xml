@@ -3,7 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.SysGoodsMapper">
-
     <resultMap type="SysGoods" id="SysGoodsResult">
         <result property="goodsId" column="goods_id"/>
         <result property="goodsTitle" column="goods_title"/>
@@ -19,12 +18,12 @@
             <result property="loginDate" column="login_date"/>
         </collection>
         <collection property="goodsGallery" ofType="com.ruoyi.system.domain.SysGoodsGallery">
-            <id property="goodsId" column="goods_id"/>
             <result property="goodsImg" column="goods_img"/>
         </collection>
         <collection property="goodsTags" ofType="com.ruoyi.system.domain.SysTag">
             <result property="tagName" column="tag_name"/>
         </collection>
+
     </resultMap>
 
     <sql id="selectSysGoodsVo">

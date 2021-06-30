@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.system;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,18 @@ public class SysGoodsController extends BaseController
     {
         startPage();
         List<SysGoods> list = sysGoodsService.selectSysGoodsList(sysGoods);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询推荐商品列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:goods:list')")
+    @GetMapping("/recommend")
+    public TableDataInfo recommend(SysGoods sysGoods) {
+        startPage();
+        // TODO:推荐商品
+        List<SysGoods> list = new ArrayList<SysGoods>();
         return getDataTable(list);
     }
 
