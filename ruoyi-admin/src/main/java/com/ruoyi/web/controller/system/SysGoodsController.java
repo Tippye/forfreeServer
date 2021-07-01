@@ -37,7 +37,6 @@ public class SysGoodsController extends BaseController
     /**
      * 查询商品信息列表
      */
-    @PreAuthorize("@ss.hasPermi('system:goods:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysGoods sysGoods)
     {
@@ -49,7 +48,6 @@ public class SysGoodsController extends BaseController
     /**
      * 查询推荐商品列表
      */
-    @PreAuthorize("@ss.hasPermi('system:goods:list')")
     @GetMapping("/recommend")
     public TableDataInfo recommend(SysGoods sysGoods) {
         startPage();
@@ -74,7 +72,6 @@ public class SysGoodsController extends BaseController
     /**
      * 获取商品信息详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:goods:query')")
     @GetMapping(value = "/{goodsId}")
     public AjaxResult getInfo(@PathVariable("goodsId") Long goodsId)
     {

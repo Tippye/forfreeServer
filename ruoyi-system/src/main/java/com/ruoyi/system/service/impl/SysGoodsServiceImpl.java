@@ -28,6 +28,7 @@ public class SysGoodsServiceImpl implements ISysGoodsService
     @Override
     public SysGoods selectSysGoodsById(Long goodsId)
     {
+        System.out.println(goodsId);
         return sysGoodsMapper.selectSysGoodsById(goodsId);
     }
 

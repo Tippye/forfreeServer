@@ -52,16 +52,16 @@
     <select id="selectSysGoodsList" parameterType="SysGoods" resultMap="SysGoodsResult">
         <include refid="selectSysGoodsVo"/>
         <where>
-            <if test="goodsTitle != null  and goodsTitle != ''">and goods_title like concat('%', #{goodsTitle}, '%')
+            <if test="goodsTitle != null  and goodsTitle != ''">and g.goods_title like concat('%', #{goodsTitle}, '%')
             </if>
-            <if test="goodsPrice != null ">and goods_price = #{goodsPrice}</if>
-            <if test="goodsDesc != null  and goodsDesc != ''">and goods_desc = #{goodsDesc}</if>
+            <if test="goodsPrice != null ">and g.goods_price = #{goodsPrice}</if>
+            <if test="goodsDesc != null  and goodsDesc != ''">and g.goods_desc like concat('%', #{goodsDesc}, '%')</if>
         </where>
     </select>
 
     <select id="selectSysGoodsById" parameterType="Long" resultMap="SysGoodsResult">
         <include refid="selectSysGoodsVo"/>
-        where goods_id = #{goodsId}
+        where g.goods_id = #{goodsId}
     </select>
 
     <insert id="insertSysGoods" parameterType="SysGoods" useGeneratedKeys="true" keyProperty="goodsId">
